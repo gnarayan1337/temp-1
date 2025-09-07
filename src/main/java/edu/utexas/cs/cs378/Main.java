@@ -29,9 +29,7 @@ public class Main {
 		ArrayList<String> errorLines = new ArrayList<>();
 		errorLines = performDataCleanup(file);
 
-		for (int i = 0; i < Math.min(5, errorLines.size()); i++) {
-			System.out.println(errorLines.get(i));
-		}
+		writeErrorLinesToFile(errorLines, "errorlines");	
 
 		mergeChunks(chunkNumber);
 	}
@@ -227,6 +225,27 @@ public class Main {
 			return false;
 		}
 
+	}
+
+	public static void writeErrorLinesToFile(ArrayList<String> errorLines, String filename) {
+		try (BufferedWriter writer = new BufferedWriter(new FileWriter(filename))) {
+			if (errorLines.isEmpty()) {
+				writer.write("No error lines found - all data is correctly formatted.");
+				writer.newLine();
+			} else {
+				writer.write("Error lines found (showing up to 5):");
+				writer.newLine();
+				writer.newLine();
+				
+				for (int i = 0; i < Math.min(5, errorLines.size()); i++) {
+					writer.write("Error " + (i + 1) + ": " + errorLines.get(i));
+					writer.newLine();
+				}
+			}
+			System.out.println("Error lines written to: " + filename);
+		} catch (IOException e) {
+			System.err.println("Error writing to file: " + e.getMessage());
+		}
 	}
 	
 }
