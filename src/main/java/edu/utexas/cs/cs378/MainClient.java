@@ -46,7 +46,7 @@ public class MainClient {
 			// 3. Send it to the server like the following.
 
 			// Real CSV processing
-			String csvFilePath = "/Users/gnarayan/Desktop/cloud_computing/cs378-cloud-computing-a-21-gnarayan1337/taxi-data-sorted-large-n.csv.csv";
+			String csvFilePath = "/Users/gnarayan/Desktop/cloud_computing/cs378-cloud-computing-a-21-gnarayan1337/taxi-data-sorted-large-n.csv";
 			int batchSize = 100_000;
 			
 			System.out.println("Starting CSV processing...");
