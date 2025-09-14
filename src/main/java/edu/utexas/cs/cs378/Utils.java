@@ -2,6 +2,7 @@ package edu.utexas.cs.cs378;
 
 import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.nio.ByteBuffer;
 import java.nio.file.Files;
 import java.nio.file.Paths;
@@ -243,9 +244,12 @@ public class Utils {
 
 				// clear batch memory
 				batchDriverMap.clear();
-				// suggest garbage collection
 				System.gc();
 
+				// Progress update
+				if (totalLinesProcessed % 500000 == 0) {
+					System.out.println("Processed " + totalLinesProcessed + " lines, " + globalDriverMap.size() + " drivers");
+				}
 
 				if (line == null) {
 					break;
@@ -256,6 +260,20 @@ public class Utils {
 			e.printStackTrace();
 		}
 
+		// Write error lines to file
+		if (!errorLines.isEmpty()) {
+			try (PrintWriter writer = new PrintWriter("errorLines.txt")) {
+				for (String errorLine : errorLines) {
+					writer.println(errorLine);
+				}
+				System.out.println("Wrote " + errorLines.size() + " error lines to errorLines.txt");
+			} catch (IOException e) {
+				System.err.println("Failed to write error file: " + e.getMessage());
+			}
+		}
+
+		System.out.println("Processing complete: " + totalLinesProcessed + " lines, " + globalDriverMap.size() + " drivers");
+
 		List<DataItem> dataItems = new ArrayList<>();
 		for (DriverData driver : globalDriverMap.values()) {
 			DataItem item = new DataItem(
@@ -264,7 +282,6 @@ public class Utils {
 				driver.getUniqueTaxiCount()
 			);
 			dataItems.add(item);
-
 		}
 
 		return dataItems;

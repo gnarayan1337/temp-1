@@ -23,9 +23,11 @@ public class MainServer {
 	public static void main(String[] args) {
 
 
-		if (args.length > 0) {
-			System.err.println("Usage: MainServer <port number>");
+		if (args.length >= 1) {
 			portNumber = Integer.parseInt(args[0]);
+			System.out.println("Using port from args: " + portNumber);
+		} else {
+			System.out.println("Using default port: " + portNumber);
 		}
 
 		ServerSocket serverSocket;
